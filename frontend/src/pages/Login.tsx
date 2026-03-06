@@ -5,24 +5,13 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 
 const Login = () => {
-    const [identifier, setIdentifier] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        try {
-            // Hardcoded authentication for static GitHub Pages deployment
-            if (identifier === 'admin' && password === 'admin') {
-                localStorage.setItem('token', 'fake-jwt-token-for-static-demo');
-                navigate('/dashboard');
-            } else {
-                throw new Error('Invalid credentials');
-            }
-        } catch (err: any) {
-            setError(err.message || 'Invalid credentials');
-        }
+        // Bypass authentication for testing
+        localStorage.setItem('token', 'fake-jwt-token-for-testing');
+        navigate('/dashboard');
     };
 
     return (
@@ -74,33 +63,11 @@ const Login = () => {
                     className="glass-panel rounded-[2.5rem] p-10 border-white/60 shadow-glass"
                 >
                     <form className="space-y-6" onSubmit={handleLogin}>
-                        {error && (
-                            <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                className="text-red-600 text-[11px] font-bold uppercase tracking-wider text-center bg-red-50 border border-red-100 p-4 rounded-2xl"
-                            >
-                                {error}
-                            </motion.div>
-                        )}
-
-                        <div className="space-y-2">
-                            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] ml-1">Identity</label>
-                            <div className="relative group">
-                                <User size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-brand-500 transition-colors duration-200" />
-                                <input type="text" required value={identifier} onChange={e => setIdentifier(e.target.value)}
-                                    className="field pl-14 h-14" placeholder="Username or Email" />
-                            </div>
+                        <div className="text-center pb-4">
+                            <h3 className="text-sm font-bold text-gray-500 uppercase tracking-widest">Demo Mode</h3>
+                            <p className="text-xs text-gray-400 mt-2">Click below to enter the application</p>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-[0.15em] ml-1">Secret Key</label>
-                            <div className="relative group">
-                                <Lock size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-brand-500 transition-colors duration-200" />
-                                <input type="password" required value={password} onChange={e => setPassword(e.target.value)}
-                                    className="field pl-14 h-14" placeholder="••••••••" />
-                            </div>
-                        </div>
 
                         <div className="pt-2">
                             <motion.button
