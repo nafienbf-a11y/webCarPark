@@ -13,11 +13,15 @@ const Login = () => {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post('http://localhost:5000/api/auth/login', { identifier, password });
-            localStorage.setItem('token', res.data.token);
-            navigate('/dashboard');
+            // Hardcoded authentication for static GitHub Pages deployment
+            if (identifier === 'admin' && password === 'admin') {
+                localStorage.setItem('token', 'fake-jwt-token-for-static-demo');
+                navigate('/dashboard');
+            } else {
+                throw new Error('Invalid credentials');
+            }
         } catch (err: any) {
-            setError(err.response?.data?.error || 'Invalid credentials');
+            setError(err.message || 'Invalid credentials');
         }
     };
 
